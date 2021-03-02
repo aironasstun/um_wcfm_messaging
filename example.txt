@@ -1,0 +1,16 @@
+add_shortcode('um_wcfm_messaging','ultimate_member_wcfm_messaging_fix');
+function ultimate_member_wcfm_messaging_fix($attr) {
+	global $WCFM, $WCFMmp, $wp, $WCFM_Query, $post;		
+	$store_id = '';
+	if ( isset( $attr['id'] ) && !empty( $attr['id'] ) ) { $store_id = absint($attr['id']); }	
+	if (  wcfm_is_store_page() ) {
+		$wcfm_store_url = get_option( 'wcfm_store_url', 'store' );
+		$store_name = apply_filters( 'wcfmmp_store_query_var', get_query_var( $wcfm_store_url ) );
+		$store_id  = 0;
+		if ( !empty( $store_name ) ) {
+			$store_user = get_user_by( 'slug', $store_name );
+		}
+		$store_id   		= $store_user->ID;
+			};
+    echo do_shortcode('[ultimatemember_message_button user_id="'.$store_id.'"]');
+}
